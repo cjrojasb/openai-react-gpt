@@ -27,7 +27,7 @@ export const ChatTemplate = () => {
     <div className='chat-container'>
       <div className='chat-messages'>
         <div className='grid grid-cols-12 gap-y-2'>
-          <GptMessage text='Hola, soy GPT-3. ¿En qué puedo ayudarte?' />
+          <GptMessage text='Hola, soy GPT-4o. ¿En qué puedo ayudarte?' />
           {messages.map((message, index) =>
             message.isGpt ? (
               <GptMessage key={index} text='Este mensaje es de OpenAI' />
@@ -44,7 +44,7 @@ export const ChatTemplate = () => {
       </div>
       <TextMessageBox
         onSendMessage={handlePostMessage}
-        placeholder='Escribe aquí un mensaje para GPT-3'
+        placeholder='Escribe aquí un mensaje para GPT-4o'
         disableCorrections={true}
       />
     </div>

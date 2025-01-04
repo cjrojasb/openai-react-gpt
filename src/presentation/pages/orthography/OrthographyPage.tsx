@@ -24,41 +24,31 @@ export const OrthographyPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Messages>([]);
 
-  const handlePostMessage = async (message: string) => {
+  const handlePostMessage = async (text: string) => {
     setIsLoading(true);
     setMessages((prev) => [...prev, { text: message, isGpt: false }]);
-    const data = await orthographyUseCase(message);
-    if (!data.ok) {
+    const { ok, message, userScore, errors } = await orthographyUseCase(text);
+    setIsLoading(false);
+    if (!ok) {
       setMessages((prev) => [
         ...prev,
         { text: 'No se pudo realizar la corrección', isGpt: true },
       ]);
-    } else {
-      setMessages((prev) => [
-        ...prev,
-        {
-          text: data.message,
-          isGpt: true,
-          info: {
-            userScore: data.userScore,
-            errors: data.errors,
-            message: data.message,
-          },
-        },
-      ]);
+      return;
     }
-    setIsLoading(false);
-    // TODO addMessage isGPT is true
+    setMessages((prev) => [
+      ...prev,
+      {
+        text: message,
+        isGpt: true,
+        info: {
+          userScore: userScore,
+          errors: errors,
+          message: message,
+        },
+      },
+    ]);
   };
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const response = await fetch('http://localhost:3000/gpt/health');
-  //     const data = await response.json();
-  //     return data;
-  //   }
-  //   fetchData();
-  // }, []);
 
   return (
     <div className='chat-container'>

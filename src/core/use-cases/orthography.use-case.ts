@@ -2,8 +2,6 @@ import type { OrthographyResponse } from '../../interfaces/orthography.response'
 
 export const orthographyUseCase = async (prompt: string) => {
   try {
-    const apiUrl = `${import.meta.env.VITE_GPT_API_URL}/orthography-check`;
-    console.log({ apiUrl });
     const response = await fetch(
       `${import.meta.env.VITE_GPT_API_URL}/orthography-check`,
       {

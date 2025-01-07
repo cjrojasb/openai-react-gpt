@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { GptMessage } from '../../components/chat-bubbles/GptMessage';
 import { MyMessage } from '../../components/chat-bubbles/MyMessage';
 import { TextMessageBox } from '../../components/chat-input-boxes/TextMessageBox';
 import { TypingLoader } from '../../components/loaders/TypingLoader';
-import { prosConsDiscusserStreamUseCase } from '../../../core/use-cases/pros-cons-discusser-stream.use-case';
+// import { prosConsDiscusserStreamUseCase } from '../../../core/use-cases/pros-cons-discusser-stream.use-case';
 import { prosConsDiscusserStreamGeneratorUseCase } from '../../../core/use-cases/pros-cons-discusser-stream-generator.use-case';
 
 interface Message {
@@ -14,15 +14,32 @@ interface Message {
 type Messages = Array<Message>;
 
 export const ProsConsStreamPage = () => {
+  const abortController = useRef(new AbortController());
+  const isRunning = useRef(false);
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Messages>([]);
 
+  const handleAbortSignal = () => {
+    abortController.current.abort();
+    abortController.current = new AbortController();
+    isRunning.current = false;
+    setIsLoading(false);
+  };
+
   const handlePostMessage = async (message: string) => {
+    if (isRunning.current) {
+      abortController.current.abort();
+      abortController.current = new AbortController();
+    }
     setIsLoading(true);
+    isRunning.current = true;
     setMessages((prev) => [...prev, { text: message, isGpt: false }]);
 
     // * new code use prosConsDiscusserStreamGeneratorUseCase
-    const stream = await prosConsDiscusserStreamGeneratorUseCase(message);
+    const stream = prosConsDiscusserStreamGeneratorUseCase(
+      message,
+      abortController.current.signal
+    );
     setIsLoading(false);
     setMessages((prev) => [
       ...prev,
@@ -39,6 +56,8 @@ export const ProsConsStreamPage = () => {
         return newMessages;
       });
     }
+
+    isRunning.current = false;
 
     // * old code use prosConsDiscusserStreamUseCase
     // const reader = await prosConsDiscusserStreamUseCase(message);
@@ -95,6 +114,9 @@ export const ProsConsStreamPage = () => {
         onSendMessage={handlePostMessage}
         placeholder='Escribe aquí un mensaje para GPT-4o'
         disableCorrections={true}
+        abortSignal={isRunning.current}
+        disabledAbortSignal={isLoading}
+        onAbortSignal={handleAbortSignal}
       />
     </div>
   );

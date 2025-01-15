@@ -1,14 +1,17 @@
-export const prosConsDiscusserStreamUseCase = async (prompt: string, abortSignal: AbortSignal) => {
+export const prosConsDiscusserStreamUseCase = async (
+  prompt: string,
+  abortSignal: AbortSignal
+) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_GPT_API_URL}/pros-cons-discusser-stream`,
+      `${import.meta.env.VITE_GPT_API_URL}/gpt/pros-cons-discusser-stream`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ prompt }),
-        signal: abortSignal
+        signal: abortSignal,
       }
     );
 

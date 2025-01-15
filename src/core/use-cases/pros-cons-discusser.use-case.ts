@@ -9,7 +9,7 @@ export const prosConsDiscusserUseCase = async (
 ): Promise<ProsConsDiscusserResponseFetch> => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_GPT_API_URL}/pros-cons-discusser`,
+      `${import.meta.env.VITE_GPT_API_URL}/gpt/pros-cons-discusser`,
       {
         method: 'POST',
         headers: {

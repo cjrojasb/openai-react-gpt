@@ -9,6 +9,7 @@ import { ProsConsPage } from '../pages/pros-cons/ProsConsPage';
 import { TextToAudioPage } from '../pages/text-to-audio/TextToAudioPage';
 import { TranslatePage } from '../pages/translate/TranslatePage';
 import { DashboardLayout } from '../layouts/DashboardLayout';
+import { ImageToTextPage } from '../pages/image-to-text/ImageToText';
 
 export interface MenuRoute {
   to: string;
@@ -74,6 +75,13 @@ export const menuRoutes: MenuRoute[] = [
     title: 'Editar imagen',
     description: 'Generación continua',
     component: <ImageTunningPage />,
+  },
+  {
+    to: '/image-to-text',
+    icon: 'fa-solid fa-image',
+    title: 'Imagen a texto',
+    description: 'Convertir imagen a texto',
+    component: <ImageToTextPage />,
   },
   {
     to: '/assistant',

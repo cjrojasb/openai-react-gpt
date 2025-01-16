@@ -4,7 +4,6 @@ import { MyMessage } from '../../components/chat-bubbles/MyMessage';
 import { TextMessageBox } from '../../components/chat-input-boxes/TextMessageBox';
 import { TypingLoader } from '../../components/loaders/TypingLoader';
 import { imageGenerationUseCase } from '../../../core/use-cases/image-generation.use-case';
-import { GptMessageImage } from '../../components/chat-bubbles/GptMessageImage';
 import { imageVariationUseCase } from '../../../core/use-cases/image-variation.use-case';
 import { GptMessageSelectableImage } from '../../components/chat-bubbles/GptMessageSelectableImage';
 
